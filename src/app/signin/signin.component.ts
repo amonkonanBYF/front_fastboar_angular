@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import axios from 'axios'
+import { IUser } from 'src/interfaces/IUser';
+import * as CryptoJS from 'crypto-js'
+import { ActivatedRoute, Router } from '@angular/router';
+
+
+
+
+const URL:string = 'https://apibackend2020.herokuapp.com/api/users'
 
 @Component({
   selector: 'app-signin',
@@ -11,7 +20,8 @@ export class SigninComponent implements OnInit {
   submitted:boolean = false
   confirm: boolean = false
 
-  constructor(private fb: FormBuilder) {
+
+  constructor(private fb: FormBuilder, private router: Router) {
  
 
    }
@@ -35,13 +45,55 @@ export class SigninComponent implements OnInit {
   }
 
   register() {
-    // console.log ('register =>', this.registerForm?.value.password)
+     console.log ('register =>', this.registerForm?.value)
     // console.log('valid regist',this.registerForm.valid)
     // console.log(this.matchPassWord(this.registerForm.value.password,this.registerForm.value.confirmPassword))
     this.submitted = true
     this.confirm = this.matchPassWord(this.registerForm.value.password,this.registerForm.value.confirmPassword)
+    const shaPassword = CryptoJS.AES.encrypt(this.registerForm.value.password,'don dada').toString()
     if(this.confirm && this.registerForm.valid) {
-      console.log('enregister', this.registerForm.value)
+      //console.log('enregister', this.registerForm.value)
+      const roles = []
+      roles.push(this.registerForm.value.role)
+      const user:IUser = {
+        firstName: this.registerForm.value.firstname,
+        lastName: this.registerForm.value.lastname,
+        username: this.registerForm.value.username,
+        email: this.registerForm.value.email,
+        password: shaPassword,
+        roles: roles,
+        newletter: this.registerForm.value.newsLetter,
+        dateCreated: new Date(),
+        ticket: [0],
+        additionalProp1: {}
+
+      }
+      console.log('user', user)
+
+      axios.post(
+        URL,
+        user, 
+        { headers: {
+          'Content-Type': 'application/ld+json ; charset=UTF-8'
+        }} 
+      ).then(res => {
+        // console.log(res)
+        // console.log(res.data)
+        console.log(res.status)
+        this.router.navigate(['userprofile',])
+
+      }).catch(err => {
+         if (err.response) {
+          console.log('resp =>', err.response)
+          console.log('req =>', err.request)
+
+
+        }else if (err.request) {
+          console.log('req =>', err.request)
+
+        }
+      })
+
     }
     else {
       console.log('error')
