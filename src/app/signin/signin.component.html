@@ -1,59 +1,55 @@
-<body>
-<div class="page-wrapper bg-red p-t-180 p-b-100 font-robo">
-    <div class="wrapper wrapper--w960">
-        <div class="card card-2">
-            <div class="card-heading"></div>
-            <div class="card-body">
-                <h2 class="title">Registration Info</h2>
-                <form method="POST">
-                    <div class="input-group">
-                        <input class="input--style-2" type="text" placeholder="Name" name="name">
-                    </div>
-                    <div class="row row-space">
-                        <div class="col-2">
-                            <div class="input-group">
-                                <input class="input--style-2 js-datepicker" type="text" placeholder="Birthdate" name="birthday">
-                                <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="input-group">
-                                <div class="rs-select2 js-select-simple select--no-search">
-                                    <select name="gender">
-                                        <option disabled="disabled" selected="selected">Gender</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                        <option>Other</option>
-                                    </select>
-                                    <div class="select-dropdown"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <div class="rs-select2 js-select-simple select--no-search">
-                            <select name="class">
-                                <option disabled="disabled" selected="selected">Class</option>
-                                <option>Class 1</option>
-                                <option>Class 2</option>
-                                <option>Class 3</option>
-                            </select>
-                            <div class="select-dropdown"></div>
-                        </div>
-                    </div>
-                    <div class="row row-space">
-                        <div class="col-2">
-                            <div class="input-group">
-                                <input class="input--style-2" type="text" placeholder="Registration Code" name="res_code">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-t-30">
-                        <button class="btn btn--radius btn--green" type="submit">Search</button>
-                    </div>
-                </form>
+<div class="container">
+    <div class="row">
+        <form [formGroup]="registerForm" (ngSubmit)="register()" >
+            <div class="form-group" >
+                <label> nom </label>
+                <input type="text" class="form-control" formControlName="firstname" id="firstname"> 
+                <div *ngIf="submitted && f.firstname.errors">First Name is required</div>
             </div>
-        </div>
+            <div class="form-group">
+                <label> prénoms </label>
+                <input type="text" class="form-control" formControlName="lastname" > 
+                <div *ngIf="submitted && f.lastname.errors">last Name is required</div>
+
+            </div>
+            <div class="form-group">
+                <label> pseudo </label>
+                <input type="text" class="form-control" formControlName="username"  > 
+                <div *ngIf="submitted && f.username.errors">user Name is required</div>
+
+            </div>
+            <div class="form-group">
+                <label> email </label>
+                <input type="email" class="form-control" formControlName="email" >
+                <div *ngIf="submitted && f.email.errors">email Name is required</div>
+
+            </div>
+            <div class="form-group">
+                <label> mot de passe </label>
+                <input type="password" class="form-control" formControlName="password" >
+                <div *ngIf="submitted && f.password.errors">password is required</div>
+ 
+            </div>
+            <div class="form-group">
+                <label> confirm mot de passe </label>
+                <input type="password" class="form-control" formControlName="confirmPassword" > 
+                <div *ngIf="submitted && !confirm"> password is not same try again</div>
+
+            </div>
+            <div class="form-group">
+                <label> news letter</label>
+                <input type="checkbox" class="form-control form-check-input" formControlName="newsLetter" > 
+            </div>
+            <div class="form-group">
+                <label> Les conditions générale d'utilisation</label>
+                <input type="checkbox" class="form-control form-check-input" formControlName="cgu"> 
+                <div *ngIf="submitted && f.password.errors">CGU is required</div>
+
+            </div>
+            <div class="form-group">
+                 <hr >
+                <button type="submit" class="btn btn-primary" [disabled]="!registerForm.valid">insctiption </button>
+            </div>
+        </form>
     </div>
 </div>
-</body>
